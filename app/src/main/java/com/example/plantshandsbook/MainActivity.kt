@@ -1,28 +1,29 @@
 package com.example.plantshandsbook
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.plantshandsbook.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity()
+class MainActivity : AppCompatActivity(){
 
     lateinit var binding: ActivityMainBinding
     private val adapter = PlantAdapter()
-    private val imageIdList = listOf(
-        R.drawable.white,
-        R.drawable.birth,
-        R.drawable.flower,
-        R.drawable.flower2,
-        R.drawable.flower3
-    )
-    private var index = 0
+    private var editLauncher: ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
+        editLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if (it.resultCode == RESULT_OK){
+                adapter.addPlant(it.data?.getSerializableExtra("plant") as Plant)
+            }
+        }
     }
 
     private fun init() {
@@ -30,11 +31,7 @@ class MainActivity : AppCompatActivity()
             rcView.layoutManager = GridLayoutManager(this@MainActivity, 3)
             rcView.adapter = adapter
             buttonAdd.setOnClickListener {
-                if(index > 4) index = 0
-                val plant = Plant(imageIdList[index], "Plant $index")
-                adapter.addPlant(plant)
-                index++
-
+                editLauncher?.launch(Intent(this@MainActivity, EditActivity::class.java))
             }
         }
     }

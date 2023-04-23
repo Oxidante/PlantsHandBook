@@ -36,5 +36,4 @@ class PlantAdapter: RecyclerView.Adapter<PlantAdapter.PlantHolder>() {
         plantList.add(plant)
         notifyDataSetChanged()
     }
-
 }

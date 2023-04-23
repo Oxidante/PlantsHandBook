@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PlantsHandsBook</string>
+    <string name="next_image">Next image</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="done">Done</string>
 </resources>
